@@ -23,7 +23,9 @@ class NoPasswordBackend(ModelBackend):
                 login_code = LoginCode.objects.get(user=user, code=code, timestamp__gt=timestamp)
                 user = login_code.user
                 user.code = login_code
-                login_code.delete()
+                multiuse_logins = getattr(settings, 'NOPASSWORD_MULTIUSE_CODES', False)
+                if (not multiuse_logins):
+                    login_code.delete()
                 return user
         except (TypeError, get_user_model().DoesNotExist, LoginCode.DoesNotExist, FieldError):
             return None

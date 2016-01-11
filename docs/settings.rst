@@ -37,10 +37,14 @@ django-nopassword settings
 .. attribute:: NOPASSWORD_TWILIO_AUTH_TOKEN
 
     Account secret for Twilio
-    
+
 .. attribute:: NOPASSWORD_NUMERIC_CODES
 
     A boolean flag if set to True, codes will contain numeric characters only (0-9). Default: False
+
+.. attribute:: NOPASSWORD_MULTIUSE_CODES
+
+    A boolean flag if set to True, allows codes to be used multiple times until the expiry is reached. Default: False
 
 Django settings used in django-nopassword
 +++++++++++++++++++++++++++++++++++++++++
