@@ -19,7 +19,7 @@ def login(request):
             code = LoginCode.objects.filter(**{
                 'user__%s' % get_username_field(): request.POST.get('username')
             })[0]
-            code.next = request.GET.get('next')
+            code.next = request.POST.get('next')
             code.save()
             code.send_login_code(
                 secure=request.is_secure(),
