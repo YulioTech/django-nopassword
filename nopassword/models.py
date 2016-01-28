@@ -30,7 +30,7 @@ class LoginCode(models.Model):
             self.timestamp = datetime.now()
 
         if not self.next:
-            self.next = '/'
+            self.next = getattr(settings, 'LOGIN_REDIRECT_URL', '/')
         super(LoginCode, self).save(*args, **kwargs)
 
     def login_url(self, secure=False, host=None):
@@ -61,7 +61,9 @@ class LoginCode(models.Model):
 
         code = cls.generate_code(length=getattr(settings, 'NOPASSWORD_CODE_LENGTH', 20))
         login_code = LoginCode(user=user, code=code)
-        if next is not None:
+        if next is None:
+            login_code.next = getattr(settings, 'LOGIN_REDIRECT_URL', '/')
+        else:
             login_code.next = next
         login_code.save()
         return login_code
