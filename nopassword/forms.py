@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django import forms
 from django.contrib.auth import authenticate
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import validate_email
 
 from .models import LoginCode
 from .utils import get_username_field
@@ -12,7 +14,13 @@ class AuthenticationForm(forms.Form):
     Base class for authenticating users. Extend this to get a form that accepts
     username logins.
     """
-    username = forms.CharField(label=_("Username"), max_length=30)
+    if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
+        email = forms.EmailField(label=_("Email"),
+                    required=True,
+                    max_length=150,
+                    widget=forms.EmailInput(attrs={'class':'form-control'}))
+    else:
+        username = forms.CharField(label=_("Username"), required=True, max_length=30)
 
     error_messages = {
         'invalid_login': _("Please enter a correct username. "
@@ -32,19 +40,24 @@ class AuthenticationForm(forms.Form):
         self.request = request
         self.user_cache = None
         super(AuthenticationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = _(get_username_field().capitalize())
+        if not getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
+            self.fields['username'].label = _(get_username_field().capitalize())
 
     def clean(self):
-        username = self.cleaned_data.get('username')
-
-        if username:
+        if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
+            email = self.cleaned_data.get('email')
+            validate_email(email)
+            self.user_cache = authenticate(**{'email': email})
+        else:
+            username = self.cleaned_data.get('username')
             self.user_cache = authenticate(**{get_username_field(): username})
-            if self.user_cache is None:
-                raise forms.ValidationError(
-                    self.error_messages['invalid_login'])
-            elif not isinstance(self.user_cache, LoginCode) and \
-                    not self.user_cache.is_active:
-                raise forms.ValidationError(self.error_messages['inactive'])
+        if self.user_cache is None:
+            raise forms.ValidationError(
+                self.error_messages['invalid_login'])
+        elif not isinstance(self.user_cache, LoginCode) and \
+                not self.user_cache.is_active:
+            raise forms.ValidationError(self.error_messages['inactive'])
+
         self.check_for_test_cookie()
         return self.cleaned_data
 

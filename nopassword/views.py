@@ -16,9 +16,14 @@ def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            code = LoginCode.objects.filter(**{
-                'user__%s' % get_username_field(): request.POST.get('username')
-            })[0]
+            if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
+                code = LoginCode.objects.filter(**{
+                    'user__%s' % get_username_field(): request.POST.get('email')
+                })[0]
+            else:
+                code = LoginCode.objects.filter(**{
+                    'user__%s' % get_username_field(): request.POST.get('username')
+                })[0]
             code.next = request.POST.get('next')
             code.save()
             code.send_login_code(
