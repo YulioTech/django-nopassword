@@ -13,6 +13,8 @@ from .utils import get_username, get_username_field
 
 
 def login(request):
+    if request.method == 'GET':
+        request.session.set_test_cookie()
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
