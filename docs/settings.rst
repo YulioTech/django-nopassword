@@ -46,6 +46,10 @@ django-nopassword settings
 
     A boolean flag if set to True, asks the user for their email instead of their username.
 
+.. attribute:: NOPASSWORD_CREATE_USERS
+
+    A boolean flag if set to True, with create a user for a given email address.  Ignored if NOPASSWORD_USE_EMAIL is False.
+
 .. attribute:: NOPASSWORD_MULTIUSE_CODES
 
     A boolean flag if set to True, allows codes to be used multiple times until the expiry is reached. Default: False

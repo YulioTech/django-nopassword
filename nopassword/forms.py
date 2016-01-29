@@ -19,12 +19,14 @@ class AuthenticationForm(forms.Form):
                     required=True,
                     max_length=150,
                     widget=forms.EmailInput(attrs={'class':'form-control'}))
+        invalid_login = _("That email address doesn't exist, please enter a correct email address.")
     else:
         username = forms.CharField(label=_("Username"), required=True, max_length=30)
+        invalid_login = _("Please enter a correct username. "
+                           "Note that both fields are case-sensitive."),
 
     error_messages = {
-        'invalid_login': _("Please enter a correct username. "
-                           "Note that both fields are case-sensitive."),
+        'invalid_login': invalid_login,
         'no_cookies': _("Your Web browser doesn't appear to have cookies "
                         "enabled. Cookies are required for logging in."),
         'inactive': _("This account is inactive."),
@@ -46,14 +48,12 @@ class AuthenticationForm(forms.Form):
     def clean(self):
         if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
             email = self.cleaned_data.get('email')
-            validate_email(email)
             self.user_cache = authenticate(**{'email': email})
         else:
             username = self.cleaned_data.get('username')
             self.user_cache = authenticate(**{get_username_field(): username})
         if self.user_cache is None:
-            raise forms.ValidationError(
-                self.error_messages['invalid_login'])
+            raise forms.ValidationError(self.error_messages['invalid_login'])
         elif not isinstance(self.user_cache, LoginCode) and \
                 not self.user_cache.is_active:
             raise forms.ValidationError(self.error_messages['inactive'])

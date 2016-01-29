@@ -13,6 +13,14 @@ class NoPasswordBackend(ModelBackend):
     def authenticate(self, code=None, **credentials):
         try:
             user = get_user_model().objects.get(**credentials)
+        except  get_user_model().DoesNotExist:
+            if getattr(settings, 'NOPASSWORD_CREATE_USERS', False):
+                user = self.create_user(**credentials)
+                if not user:
+                    return None
+            else:
+                return None
+        try:
             if not self.verify_user(user):
                 return None
             if code is None:
@@ -29,6 +37,9 @@ class NoPasswordBackend(ModelBackend):
                 return user
         except (TypeError, get_user_model().DoesNotExist, LoginCode.DoesNotExist, FieldError):
             return None
+
+    def create_user(self):
+        return None
 
     def send_login_code(self, code, secure=False, host=None, **kwargs):
         raise NotImplementedError

@@ -16,7 +16,7 @@ def login(request):
     if request.method == 'GET':
         request.session.set_test_cookie()
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
                 code = LoginCode.objects.filter(**{
