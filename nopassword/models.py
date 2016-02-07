@@ -37,9 +37,9 @@ class LoginCode(models.Model):
         username = get_username(self.user)
         host = host or getattr(settings, 'SERVER_URL', None) or 'example.com'
         if getattr(settings, 'NOPASSWORD_HIDE_USERNAME', False):
-            view = reverse_lazy('nopassword.views.login_with_code', args=[self.code]),
+            view = reverse_lazy('nopassword:login_with_code', args=[self.code]),
         else:
-            view = reverse_lazy('nopassword.views.login_with_code_and_username',
+            view = reverse_lazy('nopassword:login_with_code_and_username',
                                 args=[username, self.code]),
 
         return '%s://%s%s?next=%s' % (

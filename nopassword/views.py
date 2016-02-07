@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.views import login as django_login
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.core.urlresolvers import reverse
 
 from .forms import AuthenticationForm
 from .models import LoginCode
@@ -60,6 +61,6 @@ def login_with_code_and_username(request, username, login_code):
 def logout(request, redirect_to=None):
     auth_logout(request)
     if redirect_to is None:
-        return redirect('login')
+        return redirect(reverse('nopassword:login'))
     else:
         return redirect(redirect_to)

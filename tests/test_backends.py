@@ -5,7 +5,7 @@ import django
 from django.contrib.auth import authenticate
 from django.test import SimpleTestCase
 from django.test.utils import mail, override_settings
-from django.utils import unittest
+from django.test import TestCase
 from mock import MagicMock, patch
 
 from nopassword.backends.base import NoPasswordBackend
@@ -15,7 +15,7 @@ from nopassword.models import LoginCode
 from nopassword.utils import get_user_model
 
 
-class AuthenticationBackendTests(unittest.TestCase):
+class AuthenticationBackendTests(TestCase):
     @override_settings(AUTH_USER_MODULE='tests.NoUsernameUser')
     def test_authenticate_with_custom_user_model(self):
         """When a custom user model is used that doesn't have a field
@@ -97,7 +97,7 @@ class EmailBackendTests(SimpleTestCase):
         self.assertIn(https_url, message.body)
 
 
-class TestBackendUtils(unittest.TestCase):
+class TestBackendUtils(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create(username='test_user')
         self.inactive_user = get_user_model().objects.create(username='inactive', is_active=False)

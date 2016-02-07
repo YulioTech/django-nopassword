@@ -24,14 +24,17 @@ else:
         }
     }
 
+MIGRATION_MODULES = {
+    'auth': 'django.contrib.auth.tests.migrations',
+}
 
 AUTH_USER_MODEL = 'tests.CustomUser'
 
 NOPASSWORD_LOGIN_CODE_TIMEOUT = 900
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.auth',
     'django.contrib.sessions',
 
     'nopassword',
