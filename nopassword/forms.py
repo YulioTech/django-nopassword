@@ -47,7 +47,7 @@ class AuthenticationForm(forms.Form):
 
     def clean(self):
         if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
-            email = self.cleaned_data.get('email')
+            email = self.cleaned_data.get('email').lower()
             self.user_cache = authenticate(**{'email': email})
         else:
             username = self.cleaned_data.get('username')

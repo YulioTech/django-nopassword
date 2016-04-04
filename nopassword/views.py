@@ -21,7 +21,7 @@ def login(request):
         if form.is_valid():
             if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
                 code = LoginCode.objects.filter(**{
-                    'user__%s' % get_username_field(): request.POST.get('email')
+                    'user__%s' % get_username_field(): request.POST.get('email').lower()
                 })[0]
             else:
                 code = LoginCode.objects.filter(**{
