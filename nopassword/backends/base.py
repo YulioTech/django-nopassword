@@ -12,7 +12,6 @@ from nopassword.utils import get_user_model
 class NoPasswordBackend(ModelBackend):
     def authenticate(self, code=None, **credentials):
         try:
-            print "credentials = %s" % (str(credentials))
             if "password" in credentials:
                 return None
             user = get_user_model().objects.get(**credentials)
