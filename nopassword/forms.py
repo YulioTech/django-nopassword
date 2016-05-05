@@ -61,6 +61,9 @@ class AuthenticationForm(forms.Form):
         self.check_for_test_cookie()
         return self.cleaned_data
 
+    def clean_email(self):
+        return self.cleaned_data['email'].lower()
+                
     def check_for_test_cookie(self):
         if self.request and not self.request.session.test_cookie_worked():
             raise forms.ValidationError(self.error_messages['no_cookies'])
