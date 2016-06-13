@@ -61,4 +61,5 @@ target/
 tests/local.py
 docs/_build/
 venv
-
+# Pycharm
+.idea

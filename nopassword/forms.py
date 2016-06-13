@@ -30,6 +30,7 @@ class AuthenticationForm(forms.Form):
         'no_cookies': _("Your Web browser doesn't appear to have cookies "
                         "enabled. Cookies are required for logging in."),
         'inactive': _("This account is inactive."),
+        'noemail': _("You must enter a valid email address."),
     }
 
     def __init__(self, request=None, *args, **kwargs):
@@ -47,7 +48,9 @@ class AuthenticationForm(forms.Form):
 
     def clean(self):
         if getattr(settings, 'NOPASSWORD_USE_EMAIL', False):
-            email = self.cleaned_data.get('email').lower()
+            email = self.cleaned_data.get('email')
+            if not email:
+                raise forms.ValidationError(self.error_messages['noemail'])
             self.user_cache = authenticate(**{'email': email})
         else:
             username = self.cleaned_data.get('username')
