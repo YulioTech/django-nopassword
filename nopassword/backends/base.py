@@ -10,7 +10,7 @@ from nopassword.utils import get_user_model
 
 
 class NoPasswordBackend(ModelBackend):
-    def authenticate(self, code=None, **credentials):
+    def authenticate(self, request=None, code=None, **credentials):
         try:
             if "password" in credentials:
                 return None
