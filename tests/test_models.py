@@ -3,7 +3,7 @@ import time
 
 from django.contrib.auth import authenticate
 from django.test.utils import override_settings
-from django import tes
+from django import test
 
 from nopassword.models import LoginCode
 from nopassword.utils import get_user_model
@@ -43,7 +43,7 @@ class TestLoginCodes(test.TestCase):
 
     def test_next_value(self):
         code = LoginCode.create_code_for_user(self.user, next='/secrets/')
-        self.assertEqual(code.next, '/secrets/')
+        self.assertEqual(code.__next__, '/secrets/')
 
     @override_settings(NOPASSWORD_LOGIN_CODE_TIMEOUT=1)
     def test_code_timeout(self):

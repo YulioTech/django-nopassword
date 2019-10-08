@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth import get_backends
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -14,7 +14,7 @@ from .utils import AUTH_USER_MODEL, get_username
 
 
 class LoginCode(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, related_name='login_codes',
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='login_codes',
                              editable=False, verbose_name=_('user'))
     code = models.CharField(max_length=20, editable=False, verbose_name=_('code'))
     timestamp = models.DateTimeField(editable=False)
@@ -29,7 +29,7 @@ class LoginCode(models.Model):
         else:
             self.timestamp = datetime.now()
 
-        if not self.next:
+        if not self.__next__:
             self.next = getattr(settings, 'LOGIN_REDIRECT_URL', '/')
         super(LoginCode, self).save(*args, **kwargs)
 
@@ -46,7 +46,7 @@ class LoginCode(models.Model):
             'https' if secure else 'http',
             host,
             view[0],
-            self.next
+            self.__next__
         )
 
     def send_login_code(self, secure=False, host=None, **kwargs):
