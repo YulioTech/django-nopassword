@@ -3,10 +3,10 @@ from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate
-from django.contrib.auth.views import login as django_login
+from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .forms import AuthenticationForm
 from .models import LoginCode
@@ -39,7 +39,7 @@ def login(request, *args, **kwargs):
             )
             return render(request, 'registration/sent_mail.html')
 
-    return django_login(request, authentication_form=AuthenticationForm)
+    return DjangoLoginView.as_view()(request, authentication_form=AuthenticationForm)
 
 
 def login_with_code(request, login_code):

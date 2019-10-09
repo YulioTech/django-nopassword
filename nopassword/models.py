@@ -14,7 +14,7 @@ from .utils import AUTH_USER_MODEL, get_username
 
 
 class LoginCode(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='login_codes',
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='login_codes',
                              editable=False, verbose_name=_('user'))
     code = models.CharField(max_length=20, editable=False, verbose_name=_('code'))
     timestamp = models.DateTimeField(editable=False)

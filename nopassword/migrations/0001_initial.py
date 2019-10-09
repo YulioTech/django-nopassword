@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('code', models.CharField(editable=False, verbose_name='code', max_length=20)),
                 ('timestamp', models.DateTimeField(editable=False)),
                 ('next', models.TextField(blank=True, editable=False)),
-                ('user', models.ForeignKey(related_name='login_codes', verbose_name='user',
+                ('user', models.ForeignKey(models.CASCADE, related_name='login_codes', verbose_name='user',
                  to=settings.AUTH_USER_MODEL, editable=False)),
             ],
             options={
