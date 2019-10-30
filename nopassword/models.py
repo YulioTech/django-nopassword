@@ -29,7 +29,7 @@ class LoginCode(models.Model):
         else:
             self.timestamp = datetime.now()
 
-        if not self.__next__:
+        if not self.next:
             self.next = getattr(settings, 'LOGIN_REDIRECT_URL', '/')
         super(LoginCode, self).save(*args, **kwargs)
 
