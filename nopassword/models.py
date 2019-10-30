@@ -46,7 +46,7 @@ class LoginCode(models.Model):
             'https' if secure else 'http',
             host,
             view[0],
-            self.__next__
+            self.next
         )
 
     def send_login_code(self, secure=False, host=None, **kwargs):
