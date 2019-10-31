@@ -15,7 +15,7 @@ from .utils import get_username, get_username_field
 
 def login(request, *args, **kwargs):
     if request.method == 'GET':
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             redirect_to = kwargs.get('next', settings.LOGIN_REDIRECT_URL )
             redirect_to = request.GET.get('next', redirect_to)
             return redirect(redirect_to)
