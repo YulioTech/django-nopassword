@@ -6,8 +6,8 @@ from django.utils.functional import keep_lazy
 if django.VERSION >= (1, 5):
     from django.contrib.auth import get_user_model
     AUTH_USER_MODEL = settings.AUTH_USER_MODEL
-    get_user_model = keep_lazy(get_user_model, AUTH_USER_MODEL)
-    get_username_field = keep_lazy(lambda: get_user_model().USERNAME_FIELD, str)
+    get_user_model = keep_lazy(AUTH_USER_MODEL)(get_user_model)
+    get_username_field = keep_lazy(str)(lambda: get_user_model().USERNAME_FIELD)
 else:
     from django.contrib.auth.models import User
     AUTH_USER_MODEL = 'auth.User'
