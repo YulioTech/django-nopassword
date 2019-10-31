@@ -57,7 +57,7 @@ def login_with_code_and_username(request, username, login_code):
         if user is None:
             raise Http404
         user = auth_login(request, user)
-        return redirect(code.__next__)
+        return redirect(code.next)
 
     return render(request, 'registration/login_submit.html')
 
