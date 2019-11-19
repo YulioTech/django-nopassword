@@ -79,3 +79,6 @@ class LoginCode(models.Model):
         else:
             hashed = m.hexdigest()[:length]
         return hashed
+
+    class Meta:
+        ordering = ['-id']
