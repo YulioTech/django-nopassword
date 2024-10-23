@@ -8,7 +8,7 @@ from django.contrib.auth import get_backends
 from django.urls import reverse_lazy
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .utils import AUTH_USER_MODEL, get_username
 

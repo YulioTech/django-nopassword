@@ -36,10 +36,10 @@ setup(
     long_description=_read_long_description(),
     packages=find_packages(exclude='tests'),
     install_require=[
-        'django>=1.4',
+        'django>=4.2',
     ],
     tests_require=[
-        'django>=1.4',
+        'django>=4.4',
         'twilio==4.4.0',
         'mock>=1.0'
     ],
@@ -51,6 +51,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.12',
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Framework :: Django",
         "Environment :: Web Environment",
